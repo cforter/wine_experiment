@@ -1,0 +1,5 @@
+assignment <- c(rep(1,2), rep(0,2))
+assignment.random <- sample(assignment, 4)
+names <- c("Tyler", "Tony", "Vedant")
+df <- cbind(names, assignment.random)
+View(df)
