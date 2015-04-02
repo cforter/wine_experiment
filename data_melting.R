@@ -11,10 +11,10 @@ melted$wine[melted$variable == "rating_wine3"] <- melted$wine3[melted$variable =
 melted.merged <- merge(melted, pilot)
 View(melted.merged)
 
-
-# Quick analysis
 wine.lm <- lm(value ~ treatment + wine + (treatment * wine), data = melted.merged)
 summary(wine.lm)
+
+
 
 aggregate(value ~ wine, FUN=mean, data = melted.merged)
 aggregate(value ~ treatment, FUN=mean, data = melted.merged)
