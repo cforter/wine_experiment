@@ -1,0 +1,12 @@
+- Re-created the analysis based on Carson’s code (Carson, I’m not able to run your code in R because in your R code from “data_melting”.R , I cannot figure out which dataset you are using. So re-created the analysis based on how you melted the data. Think got almost the same answer. If you don’t mind, maybe we can talk more about this when we next meet?)
+
+- Changed the answer for 
+- Changed the column for co-variate
+- Age and Gender title got swapped by mistake in output
+
+* Note that in pilot, there is no zip code info collected. Pls try to collect it in the actual experiment so we get more power :) 
+
+- I created 3 figures so far. This is based on going through a number of research papers that we read in class. I picked out 5 that are useful: 
+
+- Got rid of “other_covariate” in the final r output
+
