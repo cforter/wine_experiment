@@ -1,0 +1,15 @@
+QUIZ Q2 CHANGE
+
+ORIGINAL:
+Which of the following actions does not help to preserve the value of a bottle of wine?	
+A) Avoid direct sunlight
+B) Place bottle in constant temperature environment	
+C) Keep bottle tilted at 10-degree angle	
+D) Use preservation spray on the wine label   <— this meant to preserver value by preventing soiled label but a bit controversial 
+
+CHANGED:
+Which of the following actions does not help to preserve the value of a bottle of wine?	
+A) Avoid direct sunlight
+B) Place bottle in constant temperature environment	
+C) Keep bottle tilted at 10-degree angle	
+D) Protect bottle label from damages

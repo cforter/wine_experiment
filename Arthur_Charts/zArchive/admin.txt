@@ -10,3 +10,20 @@
 
 - Got rid of “other_covariate” in the final r output
 
+- added “wine_pref” variable
+
+Which of the following actions does not help to preserve the value of a bottle of wine?
+ - The answer should be C (not D) 
+
+https://docs.google.com/spreadsheets/d/1stslaaO9HUYlksWh6-zLnzSTpaOOdkSxaTkWmj3wVus/edit?usp=sharing
+
+B
+C
+C
+C
+B
+B
+D
+C
+D
+C

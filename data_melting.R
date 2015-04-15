@@ -18,3 +18,4 @@ summary(wine.lm)
 
 aggregate(value ~ wine, FUN=mean, data = melted.merged)
 aggregate(value ~ treatment, FUN=mean, data = melted.merged)
+

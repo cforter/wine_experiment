@@ -1,5 +1,7 @@
 #working analysis file by Arthur
-#install.packages("reshape")
+#install.packages("reshape") #Use this to install it, do this only once
+install.packages("stargazer") #Use this to install it, do this only once
+library(stargazer)
 library(reshape2)
 data <- read.csv("Data_Collection_Test - R_data.csv")
 # data <- read.csv("Data_Collection_Pilot - R_data.csv")
@@ -29,6 +31,4 @@ aggregate(rating ~ wine, FUN=mean, data = data.melted)
 aggregate(rating ~ treatment, FUN=mean, data = data.melted)
 
 # regression plot
-
-
-
+stargazer(mydata, type = "text", title="Descriptive statistics", digits=1, out="table1.txt")
