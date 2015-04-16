@@ -30,22 +30,37 @@ summary(lm(rating ~ treatment * wine + gender + quiz_score + wine_color, data = 
 
 #Further fix data
 data.melted <- subset(data.melted, data.melted$id != 6) #eliminate "David Brookman" subject
-data.melted$zip_code <- factor(data.melted$zip_code) #turn zipcode from numerical values into factors (v. important!!)    
+data.melted <- subset(data.melted, data.melted$id != 7) #eliminate "Anne Sandback" subject
 
-data.melted$zip_code[data.melted$zip_code == "49445"] <- NA  
-data.melted$county[data.melted$county == "Muskegon"] <- NA 
+data.melted$zip_code <- factor(data.melted$zip_code) #turn zipcode from numerical values into factors
+data.melted$zip_code[data.melted$zip_code == "49445"] <- NA  #zip code is in east coast
+data.melted$county[data.melted$county == "Muskegon"] <- NA  #county is in east coast
 data.melted$wine_color[data.melted$wine_type == "error - multiple"] <- NA  
 data.melted$gender[data.melted$gender == ""] <- NA   #fix empty input for gender
 data.melted$age[data.melted$age == ""] <- NA  #fix empty input for age
 data.melted$wine_type[data.melted$wine_type == ""] <- NA    #fix empty input for wine_type (wine_type would not be used beyond this)
 data.melted$county <- relevel(as.factor(data.melted$county), ref = "Sonoma") # make Sonoma county ref level
 
-#CHART1: Descriptive Statistics - Quiz Score and Age
+#CHART1: Descriptive Statistics - Test Summaries
 # install.packages("xtable") #Use this to install it, do this only once
 # helpful link: http://cran.r-project.org/web/packages/xtable/vignettes/xtableGallery.pdf
-#use this link to generate image from latex output http://www.tlhiv.org/ltxpreview/
+# use this link to generate image from latex output http://www.tlhiv.org/ltxpreview/
 library(xtable)
 
+data.test <- data.frame(
+    "Pilot Trial" <- c("7 Subjects","3 Subjects","4 Subjects","21 Data Points", "21 Data Points", "0 Data Points"), 
+    "Actual Experiment" <- c("39 Subjects", 
+                             paste(as.character(nrow(data[data$treatment==0,]))," Subjects"),
+                             paste(as.character(nrow(data[data$treatment==1,]))," Subjects"),
+                             "117 Data Points", "9 Data Points", "108 Data Points")
+)
+colnames(data.test) <- c("Pilot Trial","Actual Experiment") 
+rownames(data.test) <- c("Total Participants","Control Group","Treatment Group","Data Collected","Data Discarded","Available Data")
+table.test <- xtable(data.test)
+align(table.test) <- "|r|c|c|"
+print(table.test,hline.after=c(-1,0,3,6),floating=FALSE)
+
+#CHART2: Descriptive Statistics - Quiz Score and Age
 data.quizAge = data.frame(
     "Mean (C)"=c("Mean",round(mean(data.melted$quiz_score[data.melted$treatment==0],na.rm=TRUE),2),
                  round(mean(data.melted$age[data.melted$treatment==0],na.rm=TRUE),2)),
@@ -66,14 +81,14 @@ data.quizAge = data.frame(
 )
 rownames(data.quizAge) <- c("","Quiz Score","Age")
 colnames(data.quizAge) <- c("","CONTROL",
-                            paste("(N=",nrow(data.melted[data.melted$treatment==0,]),")"),
+                            paste("(Subjects=",nrow(data.melted[data.melted$treatment==0,])/3,")"),
                             "","","TREATMENT",
-                            paste("(N=",nrow(data.melted[data.melted$treatment==1,]),")"),"")
+                            paste("(Subjects=",nrow(data.melted[data.melted$treatment==1,])/3,")"),"")
 table.quizAge <- xtable(data.quizAge)
 align(table.quizAge) <- "|r|cccc|cccc|"
 print(table.quizAge,hline.after=c(-1,1,3),floating=FALSE)
 
-#CHART2: Descriptive Statistics - Gender and Wine Preferences
+#CHART3: Descriptive Statistics - Gender and Wine Preferences
 gender_c <- data.melted$gender[data.melted$treatment==0]
 gender_t <- data.melted$gender[data.melted$treatment==1]
 winePref_c <- data.melted$wine_pref[data.melted$treatment==0]
@@ -98,8 +113,8 @@ num_countyM_c <- length(county_c[county_c=="Marin" & !is.na(county_c)])
 num_countySF_c <- length(county_c[county_c=="San Francisco" & !is.na(county_c)])
 num_countySM_c <- length(county_c[county_c=="San Mateo" & !is.na(county_c)])
 num_countyS_c <- length(county_c[county_c=="Sonoma" & !is.na(county_c)])
-num_countyMissing_c <- length(county_c[county_c=="Muskegon" & !is.na(county_c)])
-num_total_c <- nrow(data.melted[is.na(county_c),])
+num_countyMissing_c <- length(county_c[is.na(county_c)])
+num_total_c <- nrow(data.melted[data.melted$treatment==0,])
 
 num_male_t <-length(gender_t[gender_t=="M" & !is.na(gender_t)])
 num_female_t <-length(gender_t[gender_t=="F" & !is.na(gender_t)])
@@ -173,23 +188,23 @@ data.genderPref <- data.frame(
                        percent_countyS_c,
                        percent_countyMissing_c,
                        percent_total_c),
-    "N (Control)" <- c(num_male_c,
-                       num_female_c,
-                       num_missing_c,
-                       num_prefCheap_c,
-                       num_prefMed_c,
-                       num_prefExp_c,
-                       num_prefMissing_c,
-                       num_colorWhite_c,
-                       num_colorRed_c,
-                       num_colorMissing_c,
-                       num_countyACC_c,
-                       num_countyM_c,
-                       num_countySF_c,
-                       num_countySM_c,
-                       num_countyS_c,
-                       num_countyMissing_c,
-                       num_total_c),
+    "N (Control)" <- c(num_male_c/3,
+                       num_female_c/3,
+                       num_missing_c/3,
+                       num_prefCheap_c/3,
+                       num_prefMed_c/3,
+                       num_prefExp_c/3,
+                       num_prefMissing_c/3,
+                       num_colorWhite_c/3,
+                       num_colorRed_c/3,
+                       num_colorMissing_c/3,
+                       num_countyACC_c/3,
+                       num_countyM_c/3,
+                       num_countySF_c/3,
+                       num_countySM_c/3,
+                       num_countyS_c/3,
+                       num_countyMissing_c/3,
+                       num_total_c/3),
     "% (Treatment)" <- c(percent_male_t,
                          percent_female_t,
                          percent_missing_t,
@@ -207,25 +222,24 @@ data.genderPref <- data.frame(
                          percent_countyS_t,
                          percent_countyMissing_t,
                          percent_total_t),
-    "N (Treatment)" <- c(num_male_t,
-                         num_female_t,
-                         num_missing_t,
-                         num_prefCheap_t,
-                         num_prefMed_t,
-                         num_prefExp_t,
-                         num_prefMissing_t,
-                         num_colorWhite_t,
-                         num_colorRed_t,
-                         num_colorMissing_t,
-                         num_countyACC_t,
-                         num_countyM_t,
-                         num_countySF_t,
-                         num_countySM_t,
-                         num_countyS_t,
-                         num_countyMissing_t,
-                         num_total_t)
+    "N (Treatment)" <- c(num_male_t/3,
+                         num_female_t/3,
+                         num_missing_t/3,
+                         num_prefCheap_t/3,
+                         num_prefMed_t/3,
+                         num_prefExp_t/3,
+                         num_prefMissing_t/3,
+                         num_colorWhite_t/3,
+                         num_colorRed_t/3,
+                         num_colorMissing_t/3,
+                         num_countyACC_t/3,
+                         num_countyM_t/3,
+                         num_countySF_t/3,
+                         num_countySM_t/3,
+                         num_countyS_t/3,
+                         num_countyMissing_t/3,
+                         num_total_t/3)
 )
-
 rownames(data.genderPref) <- c("Male","Female","Gender Missing",
                                "Prefer Cheap Wine","Prefer Medium Wine","Prefer Expensive Wine","Missing Cheap/Medium/Expensive Pref",
                                "Prefer White Wine","Prefer Red Wine","Missing White/Red Wine Pref",
@@ -234,12 +248,47 @@ rownames(data.genderPref) <- c("Male","Female","Gender Missing",
 colnames(data.genderPref) <- c("% (Control)","N (Control)","% (Treatment)","N (Treatment)")
 table.genderPref <- xtable(data.genderPref)
 align(table.genderPref) <- "|r|cc|cc|"
+digits(table.genderPref) <- c(0,1,0,1,0)
 print(table.genderPref,hline.after=c(-1,0,3,7,10,16,17),floating=FALSE)
 
-# CHART 3: Histogram
+
+# CHART 4: Histogram - Ratings Distributions
 # install.packages("ggplot2")  #only need to do this once
 # http://felixfan.github.io/rstudy/2014/02/28/ggplot2-cheatsheet/
 library(ggplot2)
+ggplotColours <- function(n=6, h=c(0, 360) +15){
+    if ((diff(h)%%360) < 1) h[2] <- h[2] - 360/n
+    hcl(h = (seq(h[1], h[2], length = n)), c = 100, l = 65)
+}
+
+data.dist <- data.frame(
+    "Rating" <- c("1","2","3","4","5","1","2","3","4","5"),
+    "Group" <- c("Treatment","Treatment","Treatment","Treatment","Treatment",
+                 "Control","Control","Control","Control","Control"),
+    "Count" <- c(nrow(data.melted[data.melted$rating==1 & data.melted$treatment==1,]),
+                 nrow(data.melted[data.melted$rating==2 & data.melted$treatment==1,]),
+                 nrow(data.melted[data.melted$rating==3 & data.melted$treatment==1,]),
+                 nrow(data.melted[data.melted$rating==4 & data.melted$treatment==1,]),
+                 nrow(data.melted[data.melted$rating==5 & data.melted$treatment==1,]),
+                 nrow(data.melted[data.melted$rating==1 & data.melted$treatment==0,]),
+                 nrow(data.melted[data.melted$rating==2 & data.melted$treatment==0,]),
+                 nrow(data.melted[data.melted$rating==3 & data.melted$treatment==0,]),
+                 nrow(data.melted[data.melted$rating==4 & data.melted$treatment==0,]),
+                 nrow(data.melted[data.melted$rating==5 & data.melted$treatment==0,]))
+)
+colnames(data.dist) <- c("Rating","Group","Count")
+ggplot(data.dist, aes(y = Count, x=factor(Rating, levels = c("1","2","3","4","5")),group=Group,shape=Group,color=Group)) +     
+# ggplot(data.dist, aes(y = Score, x=factor(Rating, levels = c("1","2","3","4","5")),fill=factor(Group))) +     
+    #     geom_bar(stat = "identity", position = "dodge") +
+    geom_line(size=1.2) +
+    geom_point(size=5) +
+    ylab("Count of Ratings") +
+    xlab("Rating (Likert Scale from 1 to 5)") +
+    ggtitle("Distribution of Wine Ratings") +
+    scale_fill_manual(values = c(ggplotColours()[4], ggplotColours()[1]))
+
+
+# CHART 5: Bar Chart - Ratings (Control vs Treatment)
 data.rating <- data.frame(
     "Wine_Type" <- c("Cheap","Medium","Expensive","Cheap","Medium","Expensive"),
     "Group" <- c("Control","Control","Control","Treatment","Treatment","Treatment"),
@@ -263,7 +312,25 @@ ggplot(data.rating, aes(y = Rating, x=factor(Wine_Type, levels = c("Cheap","Medi
     geom_errorbar(aes(ymin = Rating - sd, ymax = Rating + sd), width = 0.3, position=position_dodge(.9), color = "darkblue") +
     xlab("Wine Type") +
     ylab("Rating (Likert Scale from 1 to 5)") +
-    ggtitle("Rating of Each Wine Type (Control vs Treatment Groups)")
+    ggtitle("Average Rating of Each Wine Type") 
+#     scale_fill_manual(values = c(ggplotColours()[4], ggplotColours()[1]))
+
+
+# CHART 6: Jitter Chart - Wine Ratings and Preferences
+data.jitter <- data.melted[,c("rating","wine","wine_pref")]
+data.jitter[data.jitter$wine == data.jitter$wine_pref,"Wine_Choice"] <- "Chose Wine"
+data.jitter[data.jitter$wine != data.jitter$wine_pref,"Wine_Choice"] <- "Did Not Choose"
+
+# colnames(data.dist) <- c("Rating","Group","Count")
+# ggplot(data.jitter, aes(y = wine_pref, x=factor(rating, levels = c("1","2","3","4","5")))) +     
+ggplot(data.jitter, aes(y = factor(wine, levels = c("cheap","medium","expensive")), 
+                        x=rating,
+                        group=Wine_Choice,color=Wine_Choice)) +     
+    geom_point(position=position_jitter(width=0.1, height=0.1)) + 
+    ylab("Wine Type") +
+    xlab("Rating (Likert Scale from 1 to 5)") +
+    ggtitle("Wine Ratings and Preferences") 
+#     scale_fill_manual(values = c(ggplotColours()[4], ggplotColours()[1]))
 
 
 # Check relative importance to determine covariates
@@ -271,6 +338,30 @@ ggplot(data.rating, aes(y = Rating, x=factor(Wine_Type, levels = c("Cheap","Medi
 library(relaimpo)
 lm.rel_importance <- lm(rating ~ quiz_score+county+age+gender+wine_color, data = data.melted)
 calc.relimp(lm.rel_importance, type = c("lmg"), rela = TRUE)   # http://www.r-bloggers.com/the-relative-importance-of-predictors-let-the-games-begin/
+
+
+
+
+# "Rating" <- c("1","2","3","4","5","1","2","3","4","5","1","2","3","4","5"),
+# "Wine_Pref" <- c(rep("Cheap",5),rep("Medium",5),rep("Expensive",5)),
+# "Count" <- c(nrow(data.melted[data.melted$wine_pref=="cheap" & data.melted$rating==1,]),
+#              nrow(data.melted[data.melted$wine_pref=="cheap" & data.melted$rating==2,]),
+#              nrow(data.melted[data.melted$wine_pref=="cheap" & data.melted$rating==3,]),
+#              nrow(data.melted[data.melted$wine_pref=="cheap" & data.melted$rating==4,]),
+#              nrow(data.melted[data.melted$wine_pref=="cheap" & data.melted$rating==5,]),
+#              nrow(data.melted[data.melted$wine_pref=="medium" & data.melted$rating==1,]),
+#              nrow(data.melted[data.melted$wine_pref=="medium" & data.melted$rating==2,]),
+#              nrow(data.melted[data.melted$wine_pref=="medium" & data.melted$rating==3,]),
+#              nrow(data.melted[data.melted$wine_pref=="medium" & data.melted$rating==4,]),
+#              nrow(data.melted[data.melted$wine_pref=="medium" & data.melted$rating==5,]),
+#              nrow(data.melted[data.melted$wine_pref=="expensive" & data.melted$rating==1,]),
+#              nrow(data.melted[data.melted$wine_pref=="expensive" & data.melted$rating==2,]),
+#              nrow(data.melted[data.melted$wine_pref=="expensive" & data.melted$rating==3,]),
+#              nrow(data.melted[data.melted$wine_pref=="expensive" & data.melted$rating==4,]),
+#              nrow(data.melted[data.melted$wine_pref=="expensive" & data.melted$rating==5,])
+# )
+
+
 
 # Proportion of variance explained by model: 8.11%
 # Metrics are normalized to sum to 100% (rela=TRUE). 
