@@ -1,40 +1,1 @@
-id,group,treatment,rating_cheap,rating_medium,rating_expensive,quiz_score,zip_code,gender,age,wine_pref,wine_type,wine_color
-1,W01,1,5,4,3,cheap,94110,M,21,cheap,cabernet sauvignon,red
-2,W01,1,3,3,4,expensive,94949,M,58,expensive,,
-3,W01,1,1,1,1,cheap,94965,M,60,cheap,riesling,white
-4,W01,1,1,4,3,medium,94945,F,54,medium,merlot,red
-5,W01,1,2,1,4,expensive,94949,F,54,expensive,sauvignon blanc,white
-6,W01,1,3,4,3,medium,94110,M,26,medium,error - multiple,
-7,W02,1,4,3,5,expensive,94955,F,50,expensive,cabernet sauvignon,red
-8,W02,1,4,4,1,medium,94903,F,49,medium,cabernet sauvignon,red
-9,W02,1,3,2,3,expensive,94702,M,44,expensive,zinfandel,red
-10,W03,0,2,3,4,expensive,94901,F,33,expensive,pinot noir,red
-11,W03,0,3,5,3,medium,94525,F,28,medium,error - multiple,
-12,W03,0,4,3,5,expensive,94952,M,52,expensive,zinfandel,red
-13,W03,0,2,3,4,expensive,94525,M,30,expensive,sauvignon blanc,white
-14,W04,0,2,3,3,expensive,49445,M,53,expensive,zinfandel,red
-15,W04,0,2,5,4,medium,94955,F,24,medium,riesling,white
-16,W04,0,1,3,5,expensive,94930,F ,56,expensive,,
-17,W04,0,2,2,3,expensive,95476,F,,expensive,chardonnay,white
-18,W05,0,2,3,4,expensive,94944,M,30,expensive,pinot noir,red
-19,W05,0,2,3,4,expensive,94901,M,35,expensive,pinot noir,red
-20,W05,0,2,3,3,expensive,94945,M,55,expensive,zinfandel,red
-21,W05,0,3,4,4,expensive,94945,M,69,expensive,pinot noir,red
-22,W06,0,3,2,1,cheap,94122,M,31,cheap,pinot noir,red
-23,W06,0,2,3,4,expensive,94103,M,31,expensive,syrah,red
-24,W06,0,2,3,4,expensive,94047,M,38,expensive,cabernet sauvignon,red
-25,W06,0,2,3,4,expensive,94110,M,24,expensive,cabernet sauvignon,red
-26,W06,0,4,3,3,expensive,94960,M,45,expensive,zinfandel,red
-27,W06,0,3,3,4,expensive,94960,F,40,expensive,,
-28,W07,1,4,4,5,expensive,94903,M,53,expensive,cabernet sauvignon,red
-29,W07,1,4,4,5,expensive,94955,F,24,expensive,riesling,white
-30,W07,1,3,5,4,medium,94965,F,47,medium,pinot noir,red
-31,W07,1,4,5,5,expensive,94945,F,49,expensive,zinfandel,red
-32,W07,1,3,4,4,cheap,95476,M,76,cheap,pinot noir,red
-33,W08,1,3,5,4,medium,94115,F,49,medium,syrah,red
-34,W08,1,4,2,3,cheap,94122,M,55,cheap,cabernet sauvignon,red
-35,W08,1,1,5,4,medium,94952,F,50,medium,zinfandel,red
-36,W08,1,2,3,4,expensive,94903,F,42,expensive,pinot noir,red
-37,W09,1,2,4,4,expensive,94901,F,31,expensive,pinot noir,red
-38,W09,1,3,4,4,medium,94944,F,30,medium,sauvignon blanc,white
-39,W09,1,5,4,3,cheap,94122,,51,cheap,chardonnay,white
+id,group,treatment,rating_cheap,rating_medium,rating_expensive,quiz_score,zip_code,county,gender,age,wine_pref,wine_type,wine_color1,W01,1,5,4,3,5,94110,San Francisco,M,21,cheap,cabernet sauvignon,red2,W01,1,3,3,4,9,94949,Marin,M,58,expensive,,3,W01,1,1,1,1,6,94965,Marin,M,60,cheap,riesling,white4,W01,1,1,4,3,4,94945,Marin,F,54,medium,merlot,red5,W01,1,2,1,4,6,94949,Marin,F,54,expensive,sauvignon blanc,white6,W01,1,3,4,3,6,94110,San Francisco,M,26,medium,error - multiple,7,W02,1,4,3,5,8,94955,Sonoma,F,50,expensive,cabernet sauvignon,red8,W02,1,4,4,1,5,94903,Marin,F,49,medium,cabernet sauvignon,red9,W02,1,3,2,3,6,94702,Alameda & Contra Costa,M,44,expensive,zinfandel,red10,W03,0,2,3,4,4,94901,Marin,F,33,expensive,pinot noir,red11,W03,0,3,5,3,7,94525,Alameda & Contra Costa,F,28,medium,error - multiple,12,W03,0,4,3,5,8,94952,Sonoma,M,52,expensive,zinfandel,red13,W03,0,2,3,4,6,94525,Alameda & Contra Costa,M,30,expensive,sauvignon blanc,white14,W04,0,2,3,3,10,49445,Muskegon,M,53,expensive,zinfandel,red15,W04,0,2,5,4,6,94955,Sonoma,F,24,medium,riesling,white16,W04,0,1,3,5,6,94930,Marin,F ,56,expensive,,17,W04,0,2,2,3,4,95476,Marin,F,,expensive,chardonnay,white18,W05,0,2,3,4,6,94944,Marin,M,30,expensive,pinot noir,red19,W05,0,2,3,4,6,94901,Marin,M,35,expensive,pinot noir,red20,W05,0,2,3,3,7,94945,Marin,M,55,expensive,zinfandel,red21,W05,0,3,4,4,9,94945,Marin,M,69,expensive,pinot noir,red22,W06,0,3,2,1,7,94122,San Francisco,M,31,cheap,pinot noir,red23,W06,0,2,3,4,6,94103,San Francisco,M,31,expensive,syrah,red24,W06,0,2,3,4,4,94047,San Mateo,M,38,expensive,cabernet sauvignon,red25,W06,0,2,3,4,7,94110,San Francisco,M,24,expensive,cabernet sauvignon,red26,W06,0,4,3,3,8,94960,Marin,M,45,expensive,zinfandel,red27,W06,0,3,3,4,9,94960,Marin,F,40,expensive,,28,W07,1,4,4,5,4,94903,Marin,M,53,expensive,cabernet sauvignon,red29,W07,1,4,4,5,4,94955,Sonoma,F,24,expensive,riesling,white30,W07,1,3,5,4,3,94965,Marin,F,47,medium,pinot noir,red31,W07,1,4,5,5,8,94945,Marin,F,49,expensive,zinfandel,red32,W07,1,3,4,4,6,95476,Marin,M,76,cheap,pinot noir,red33,W08,1,3,5,4,8,94115,San Francisco,F,49,medium,syrah,red34,W08,1,4,2,3,6,94122,San Francisco,M,55,cheap,cabernet sauvignon,red35,W08,1,1,5,4,7,94952,Sonoma,F,50,medium,zinfandel,red36,W08,1,2,3,4,9,94903,Marin,F,42,expensive,pinot noir,red37,W09,1,2,4,4,5,94901,Marin,F,31,expensive,pinot noir,red38,W09,1,3,4,4,7,94944,Marin,F,30,medium,sauvignon blanc,white39,W09,1,5,4,3,4,94122,San Francisco,F,51,cheap,chardonnay,white
