@@ -332,15 +332,21 @@ ggplot(data.jitter, aes(y = factor(wine, levels = c("cheap","medium","expensive"
     ggtitle("Wine Ratings and Preferences") 
 #     scale_fill_manual(values = c(ggplotColours()[4], ggplotColours()[1]))
 
+# replot but flip the axis
+ggplot(data.jitter, aes(x = factor(wine, levels = c("cheap","medium","expensive")), 
+                        y=rating,
+                        group=Wine_Choice,color=Wine_Choice)) +     
+    geom_point(position=position_jitter(width=0.1, height=0.1)) + 
+    xlab("Wine Type") +
+    ylab("Rating (Likert Scale from 1 to 5)") +
+    ggtitle("Wine Ratings and Preferences") 
+
 
 # Check relative importance to determine covariates
 # install.packages("relaimpo") #Use this to install it, do this only once
 library(relaimpo)
 lm.rel_importance <- lm(rating ~ quiz_score+county+age+gender+wine_color, data = data.melted)
 calc.relimp(lm.rel_importance, type = c("lmg"), rela = TRUE)   # http://www.r-bloggers.com/the-relative-importance-of-predictors-let-the-games-begin/
-
-
-
 
 # "Rating" <- c("1","2","3","4","5","1","2","3","4","5","1","2","3","4","5"),
 # "Wine_Pref" <- c(rep("Cheap",5),rep("Medium",5),rep("Expensive",5)),
