@@ -127,8 +127,3 @@ dist.under.sharp <- replicate(10000, ate.calc(no.rose$value, randomize()))
 plot(density(dist.under.sharp))
 abline(v = )
 sd(dist.under.sharp)
-=======
-aggregate(value ~ wine, FUN=mean, data = melted.merged)
-aggregate(value ~ treatment, FUN=mean, data = melted.merged)
-
->>>>>>> origin/master
