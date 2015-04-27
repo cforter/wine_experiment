@@ -7,13 +7,11 @@ View(final.data)
 
 wines <- final.data[c(1:39),c(2,11:13,26:28)]
 melted <- melt(wines)
-View(melted)
 melted$wine[melted$variable == "rating_wine1"] <- melted$wine1[melted$variable == "rating_wine1"]
 melted$wine[melted$variable == "rating_wine2"] <- melted$wine2[melted$variable == "rating_wine2"]
 melted$wine[melted$variable == "rating_wine3"] <- melted$wine3[melted$variable == "rating_wine3"]
-View(melted)
 melted.merged <- merge(final.data, melted, by.x = "name", by.y = "name" )
-View(melted.merged)
+
 
 #Fix Errors
 melted.merged$gender[melted.merged$gender == "F "] <- "F"
@@ -28,15 +26,11 @@ melted.merged$score_range[melted.merged$quiz_score < 4] <- "Lo"
 wine.lm <- lm(value ~ treatment + wine + (treatment * wine), data = melted.merged)
 summary(wine.lm)
 
-<<<<<<< HEAD
-# Make cheap wine reference level
+# Make expensive wine reference level
 melted.merged$wine <- relevel(as.factor(melted.merged$wine), ref = "expensive")
 
 #  Exclude all 1's response
 no.rose <- subset(melted.merged, melted.merged$name != "B Rose")
-View(no.rose)
-
-
 
 # Percentage of males in control
 not.treat <- subset(melted.merged, melted.merged$treatment == 0)
@@ -46,19 +40,21 @@ length(not.treat$gender[not.treat$gender == "M"])/length(not.treat$gender)
 only.treat <- subset(melted.merged, melted.merged$treatment == 1)
 length(only.treat$gender[only.treat$gender == "M"])/length(only.treat$gender)
 
-
+# Pivot tables of outcome by wine in treatment and control
 aggregate(value ~ wine, FUN=mean, data = subset(melted.merged, melted.merged$treatment == 1))
 aggregate(value ~ wine, FUN=mean, data = subset(melted.merged, melted.merged$treatment == 0))
 aggregate(value ~ treatment, FUN=mean, data = melted.merged)
 
-# More complex
+# With more covars
 wine.lm <- lm(value ~ treatment + wine + (treatment * wine)
                  + (gender) + quiz_score + wine_color, data = no.rose)
 summary(wine.lm)
 
+# Simple lm, covars increasing SE
 wine.lm <- lm(value ~ wine, data = melted.merged)
 summary(wine.lm)
 
+# Covar balance check on gender
 gender.lm <- lm(treatment ~ gender, data = melted.merged)
 summary(gender.lm)
 
@@ -70,7 +66,7 @@ cheap.interval
 medium.interval <- c((.4777 - ci), (.4777 + ci))
 medium.interval
 
-#Cluster standard error function
+# Cluster standard error function
 cl <- function(fm, cluster){
   require(sandwich, quietly = TRUE)
   require(lmtest, quietly = TRUE)
@@ -83,7 +79,7 @@ cl <- function(fm, cluster){
   coeftest(fm, vcovCL)
 }
 
-#Cluster vector and clustered SEs
+# Cluster vector and clustered SEs
 test <- no.rose[,c(1,47,25,48,3,32,9)]
 cluster.df <- na.omit(test)
 cluster.vector <- cluster.df$name
