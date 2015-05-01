@@ -392,7 +392,7 @@ stargazer(lm.no_cov, lm.final, lm.full, type='html',
     order = c(1,2,3,12,13,4,5,6,7,8,9,10,11),
     digits=3,
     dep.var.labels="Wine Rating (Likert Scale from 1 to 5)",
-    covariate.labels=c("Treatment of Showing Price","Drank Cheap Wine [i]","Drank Medium-Priced Wine [i]",
+    covariate.labels=c("Treatment of Showing Price","Cheap Wine [i]","Medium Wine [i]",
                        "Interaction of Treatment and Cheap Wine","Interaction of Treatment and Medium Wine",
                        "Live in Alameda/Contra Costa County [ii]","Live in Marin County [ii]","Live in San Francisco County [ii]","Live in San Mateo County [ii]",
                        "Gender Being Male","Age","Prefer White Wine","Wine Quiz Score"),
@@ -403,7 +403,7 @@ stargazer(lm.no_cov, lm.final, lm.full, type='html',
             "[i] Expensive Wine being the reference wine type",
             "[ii] Sonoma County being the reference county"), 
     notes.align="l",
-    out='chart4_reg_nocluster.htm')
+    out='chart7_reg_nocluster.htm')
 
 # summary(lm.no_cov)
 # summary(lm.final)
@@ -461,7 +461,7 @@ stargazer(lm.no_cov, lm.final, lm.full, type='html',
           order = c(1,2,3,12,13,4,5,6,7,8,9,10,11),
           digits=3,
           dep.var.labels="Wine Rating (Likert Scale from 1 to 5)",
-          covariate.labels=c("Treatment of Showing Price","Drank Cheap Wine [i]","Drank Medium-Priced Wine [i]",
+          covariate.labels=c("Treatment of Showing Price","Cheap Wine [i]","Medium Wine [i]",
                              "Interaction of Treatment and Cheap Wine","Interaction of Treatment and Medium Wine",
                              "Live in Alameda/Contra Costa County [ii]","Live in Marin County [ii]","Live in San Francisco County [ii]","Live in San Mateo County [ii]",
                              "Gender Being Male","Age","Prefer White Wine","Wine Quiz Score"),
@@ -474,4 +474,84 @@ stargazer(lm.no_cov, lm.final, lm.full, type='html',
                   "[ii] Sonoma County being the reference county"), 
           notes.align="l",
           se=list(sd.no_cov,sd.final,sd.full), #add the clustered standard error here
-          out='chart4_reg_cluster.htm')
+          out='chart7_reg_cluster.htm')
+
+#Raffle function
+raffle <- function(dataset){
+    winners <- as.data.frame(matrix(,nrow=3,ncol=2))
+    colnames(winners) <- c("wine_type","winner_id")
+    wine_types <- c('cheap','medium','expensive')
+    for (i in 1:length(wine_types)){
+        data.wine_type <- dataset[dataset$wine_pref==wine_types[i],]
+        lucky_draw <- vector()
+        for (j in 1:nrow(data.wine_type)){
+            lucky_draw<-c(lucky_draw,rep(data.wine_type[j,'id'],data.wine_type$quiz_score[j]))
+        }
+        print(lucky_draw)
+        winners[i,] <- c(wine_types[i],sample(lucky_draw,1))
+    }
+    return(winners)
+}
+
+raffle(data)
+
+########################################
+#use wine preference instead of ratings
+data.chosen <- data.melted
+data.chosen$wine_chosen <- ifelse(data.melted$wine_pref==data.melted$wine,1,0)
+
+lm.no_cov = lm(wine_chosen ~ treatment * wine, data = data.chosen)
+lm.final = lm(wine_chosen ~ treatment * wine + county + gender , data = data.chosen) 
+lm.full = lm(wine_chosen ~ treatment * wine + county + gender + age + wine_color + quiz_score, data = data.chosen) 
+stargazer(lm.no_cov, lm.final, lm.full, type='html',
+          order = c(1,2,3,12,13,4,5,6,7,8,9,10,11),
+          digits=3,
+          dep.var.labels="Wine Selection for Raffle",
+          covariate.labels=c("Treatment of Showing Price","Cheap Wine [i]","Medium Wine [i]",
+                             "Interaction of Treatment and Cheap Wine","Interaction of Treatment and Medium Wine",
+                             "Live in Alameda/Contra Costa County [ii]","Live in Marin County [ii]","Live in San Francisco County [ii]","Live in San Mateo County [ii]",
+                             "Gender Being Male","Age","Prefer White Wine","Wine Quiz Score"),
+          add.lines = list(c("Chosen Model", "No", "Yes","No")),
+          notes=c("(1) Regression without covariates",
+                  "(2) Regression with selected set of covariates (final model)",
+                  "(3) Regression with full set of covariates",
+                  "[i] Expensive Wine being the reference wine type",
+                  "[ii] Sonoma County being the reference county"), 
+          notes.align="l",
+          out='chart8_reg_raffle_nocluster.htm')
+
+#clustered version for wine preference (instead of wine rating)
+data.no_cov <- cl(lm.no_cov,data.chosen$id)
+data.no_cov
+sd.no_cov <- data.no_cov[,"Std. Error"]
+
+data.final <- cl_removeNA(lm.final,data.chosen$id)  
+data.final
+sd.final <- data.final[,"Std. Error"]
+
+data.full <- cl_removeNA(lm.full,data.chosen$id)
+data.full
+sd.full <- data.full[,"Std. Error"]
+
+stargazer(lm.no_cov, lm.final, lm.full, type='html',
+          order = c(1,2,3,12,13,4,5,6,7,8,9,10,11),
+          digits=3,
+          dep.var.labels="Wine Selection for Raffle",
+          covariate.labels=c("Treatment of Showing Price","Cheap Wine [i]","Medium Wine [i]",
+                             "Interaction of Treatment and Cheap Wine","Interaction of Treatment and Medium Wine",
+                             "Live in Alameda/Contra Costa County [ii]","Live in Marin County [ii]","Live in San Francisco County [ii]","Live in San Mateo County [ii]",
+                             "Gender Being Male","Age","Prefer White Wine","Wine Quiz Score"),
+          add.lines = list(c("Chosen Model", "No", "Yes","No")),
+          notes=c("Clustered standard error is used (cluster by each subject id)",
+                  "(1) Regression without covariates",
+                  "(2) Regression with selected set of covariates (final model)",
+                  "(3) Regression with full set of covariates",
+                  "[i] Expensive Wine being the reference wine type",
+                  "[ii] Sonoma County being the reference county"), 
+          notes.align="l",
+          se=list(sd.no_cov,sd.final,sd.full), #add the clustered standard error here
+          out='chart8_reg_raffle_cluster.htm')
+
+
+
+
